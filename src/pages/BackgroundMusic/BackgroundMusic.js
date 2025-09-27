@@ -11,53 +11,43 @@ const BackgroundMusic = () => {
     const [selectedMusic, setSelectedMusic] = useState(null);
     const [modalMode, setModalMode] = useState('add');
     const [playingId, setPlayingId] = useState(null);
+    const [audioElement, setAudioElement] = useState(null);
 
     useEffect(() => {
         fetchBackgroundMusic();
     }, []);
 
+    // Cleanup audio when component unmounts
+    useEffect(() => {
+        return () => {
+            if (audioElement) {
+                audioElement.pause();
+            }
+        };
+    }, [audioElement]);
+
     const fetchBackgroundMusic = async () => {
         try {
             setLoading(true);
-            // Mock data for demonstration
-            const mockBackgroundMusic = [
-                {
-                    _id: '1',
-                    title: 'Forest Ambience',
-                    duration: '1200',
-                    image: null,
-                    file: null,
-                    createdAt: '2024-01-15T10:30:00Z'
-                },
-                {
-                    _id: '2',
-                    title: 'Ocean Waves',
-                    duration: '900',
-                    image: null,
-                    file: null,
-                    createdAt: '2024-01-12T14:20:00Z'
-                },
-                {
-                    _id: '3',
-                    title: 'Rain Sounds',
-                    duration: '1800',
-                    image: null,
-                    file: null,
-                    createdAt: '2024-01-10T09:15:00Z'
-                },
-                {
-                    _id: '4',
-                    title: 'White Noise',
-                    duration: '3600',
-                    image: null,
-                    file: null,
-                    createdAt: '2024-01-08T16:45:00Z'
-                }
-            ];
+            const response = await backgroundMusicService.getBackgroundMusic();
 
-            setBackgroundMusic(mockBackgroundMusic);
+            // Handle the API response structure
+            if (response.result === 0 && response.payload?.backgroundMusic) {
+                const musicData = response.payload.backgroundMusic.map(track => ({
+                    ...track,
+                    // Construct full image URL if image exists
+                    image: track.image ? `https://api.iamwithyouapp.com/uploads/images/${track.image}` : null,
+                    // Construct full file URL if file exists
+                    file: track.file ? `https://api.iamwithyouapp.com/uploads/audio/${track.file}` : null
+                }));
+                setBackgroundMusic(musicData);
+            } else {
+                console.error('Unexpected API response structure:', response);
+                setBackgroundMusic([]);
+            }
         } catch (error) {
             console.error('Error fetching background music:', error);
+            setBackgroundMusic([]);
         } finally {
             setLoading(false);
         }
@@ -91,11 +81,37 @@ const BackgroundMusic = () => {
         }
     };
 
-    const handlePlay = (musicId) => {
-        if (playingId === musicId) {
+    const handlePlay = (track) => {
+        if (playingId === track._id) {
+            // Pause current track
+            if (audioElement) {
+                audioElement.pause();
+            }
             setPlayingId(null);
         } else {
-            setPlayingId(musicId);
+            // Stop previous track if any
+            if (audioElement) {
+                audioElement.pause();
+            }
+
+            // Play new track if file exists
+            if (track.file) {
+                const audio = new Audio(track.file);
+                audio.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                    alert('Error playing audio file');
+                });
+
+                audio.addEventListener('ended', () => {
+                    setPlayingId(null);
+                    setAudioElement(null);
+                });
+
+                setAudioElement(audio);
+                setPlayingId(track._id);
+            } else {
+                alert('Audio file not available');
+            }
         }
     };
 
@@ -166,7 +182,7 @@ const BackgroundMusic = () => {
                             <div className="play-overlay">
                                 <button
                                     className="play-button"
-                                    onClick={() => handlePlay(track._id)}
+                                    onClick={() => handlePlay(track)}
                                 >
                                     {playingId === track._id ? <FiPause size={24} /> : <FiPlay size={24} />}
                                 </button>

@@ -19,13 +19,11 @@ const Music = () => {
 
     const fetchCategories = async () => {
         try {
-            console.log('Fetching categories...');
             const response = await categoryService.getCategories(true); // Pass true to get all categories
-            console.log('Categories response:', response);
 
             if (response.result === 0) {
-                setCategories(response.payload.categories || []);
-                console.log('Categories loaded:', response.payload.categories?.length || 0);
+                setCategories(response.payload.category || []);
+                console.log('Categories loaded:', response.payload.category?.length || 0);
             } else {
                 console.error('Categories API returned error:', response.message);
                 setCategories([]);
@@ -51,7 +49,6 @@ const Music = () => {
                 ...(selectedCategory && { categoryId: selectedCategory })
             };
 
-            console.log('Fetching music with params:', params);
             const response = await musicService.getMusic(params);
             console.log('Music response:', response);
 

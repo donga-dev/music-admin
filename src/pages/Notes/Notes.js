@@ -17,11 +17,12 @@ const Notes = () => {
 
     const fetchNotes = useCallback(async () => {
         try {
-            setLoading(true);
+            // setLoading(true);
             const response = await notesService.getNotes(selectedCategory || null);
+            console.log('Notes response:', response);
 
             // Map the API response to include categoryName from categories
-            const notesWithCategoryName = response.notes?.map(note => {
+            const notesWithCategoryName = response.payload.notes?.map(note => {
                 const category = categories.find(cat => cat._id === note.categoryId);
                 return {
                     ...note,
@@ -53,7 +54,8 @@ const Notes = () => {
     const fetchCategories = async () => {
         try {
             const response = await notesCategoryService.getNoteCategories(true);
-            setCategories(response.noteCategories || []);
+            console.log('Categories response:', response);
+            setCategories(response.payload.noteCategory || []);
         } catch (error) {
             console.error('Error fetching categories:', error);
             // Show user-friendly error message
