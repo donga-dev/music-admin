@@ -19,41 +19,9 @@ const Background = () => {
         try {
             setLoading(true);
             const response = await backgroundService.getBackground();
-            console.log('Background API Response:', response);
-            console.log('Response type:', typeof response);
-            console.log('Response keys:', Object.keys(response || {}));
+            console.log('Background API Response:', response.payload.background);
 
-            // Handle different possible response structures
-            let backgroundData = [];
-
-            console.log('Full response structure:', JSON.stringify(response, null, 2));
-
-            if (response.payload && response.payload.background && Array.isArray(response.payload.background)) {
-                console.log('Using response.payload.background');
-                backgroundData = response.payload.background;
-            } else if (response.payload && Array.isArray(response.payload)) {
-                console.log('Using response.payload as array');
-                backgroundData = response.payload;
-            } else if (response.backgrounds && Array.isArray(response.backgrounds)) {
-                console.log('Using response.backgrounds');
-                backgroundData = response.backgrounds;
-            } else if (Array.isArray(response)) {
-                console.log('Using response as array');
-                backgroundData = response;
-            } else if (response.data && Array.isArray(response.data)) {
-                console.log('Using response.data');
-                backgroundData = response.data;
-            } else {
-                console.log('No matching response structure found');
-                console.log('Available keys:', Object.keys(response || {}));
-                console.log('Response payload type:', typeof response.payload);
-                console.log('Response payload keys:', response.payload ? Object.keys(response.payload) : 'No payload');
-                backgroundData = [];
-            }
-
-            console.log('Final backgroundData:', backgroundData);
-            console.log('backgroundData length:', backgroundData.length);
-            setBackgrounds(backgroundData);
+            setBackgrounds(response.payload.background || []);
         } catch (error) {
             console.error('Error fetching backgrounds:', error);
             console.error('Error details:', error.response?.data || error.message);
@@ -64,9 +32,7 @@ const Background = () => {
         }
     };
 
-    const filteredBackgrounds = backgrounds.filter(background =>
-        background.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredBackgrounds = backgrounds
     const handleAdd = () => {
         setSelectedBackground(null);
         setModalMode('add');
