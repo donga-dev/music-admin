@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FiEdit, FiTrash2, FiPlus, FiSearch, FiPlay, FiPause } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiPlay, FiPause, FiUpload } from 'react-icons/fi';
 import { musicService } from '../../services/musicService';
 import { categoryService } from '../../services/categoryService';
 import './Music.css';
@@ -128,6 +128,23 @@ const Music = () => {
         }
     };
 
+    const handlePremiumToggle = async (musicId, currentStatus) => {
+        try {
+            const newStatus = !currentStatus;
+            await musicService.updatePremiumStatus(musicId, newStatus);
+
+            // Update the local state
+            setMusic(music.map(track =>
+                track._id === musicId
+                    ? { ...track, isSubscribe: newStatus }
+                    : track
+            ));
+        } catch (error) {
+            console.error('Error updating premium status:', error);
+            alert('Error updating premium status');
+        }
+    };
+
     const handlePlay = (musicId) => {
         if (playingId === musicId) {
             setPlayingId(null);
@@ -242,9 +259,19 @@ const Music = () => {
                                 </td>
                                 <td>{formatDuration(parseInt(track.duration))}</td>
                                 <td>
-                                    <span className={`premium-status ${track.isSubscribe ? 'premium' : 'free'}`}>
-                                        {track.isSubscribe ? 'Premium' : 'Free'}
-                                    </span>
+                                    <div className="premium-toggle">
+                                        <label className="toggle-switch">
+                                            <input
+                                                type="checkbox"
+                                                checked={track.isSubscribe}
+                                                onChange={() => handlePremiumToggle(track._id, track.isSubscribe)}
+                                            />
+                                            <span className="toggle-slider"></span>
+                                        </label>
+                                        <span className="toggle-label">
+                                            {track.isSubscribe ? 'Premium' : 'Free'}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>{formatDate(track.createdAt)}</td>
                                 <td>
@@ -443,22 +470,35 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
 
                         <div className="form-group">
                             <label htmlFor="image">Cover Image</label>
-                            <input
-                                type="file"
-                                id="image"
-                                accept="image/*"
-                                onChange={(e) => handleFileChange(e, 'image')}
-                            />
+                            <div className="file-upload-area">
+                                <input
+                                    type="file"
+                                    id="image"
+                                    accept="image/*"
+                                    onChange={(e) => handleFileChange(e, 'image')}
+                                />
+                                <div className="upload-text">
+                                    <FiUpload />
+                                    <span>Click to upload image or drag and drop</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="file">Music File</label>
-                            <input
-                                type="file"
-                                id="file"
-                                accept="audio/*"
-                                onChange={(e) => handleFileChange(e, 'music')}
-                            />
+                            <div className="file-upload-area">
+                                <input
+                                    type="file"
+                                    id="file"
+                                    accept="audio/*"
+                                    onChange={(e) => handleFileChange(e, 'music')}
+                                />
+                                <div className="upload-text">
+                                    <FiUpload />
+                                    <span>Click to upload audio file or drag and drop</span>
+                                    <small>Supported formats: MP3, WAV, OGG</small>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="form-group">
@@ -469,7 +509,7 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
                                     checked={formData.isSubscribe}
                                     onChange={handleChange}
                                 />
-                                Premium Content
+                                <span>Premium Content</span>
                             </label>
                         </div>
 

@@ -31,5 +31,11 @@ export const musicService = {
     deleteMusic: async (id) => {
         const response = await api.delete(`music/deleteMusic/${id}`);
         return response.data;
+    },
+
+    // Update premium status
+    updatePremiumStatus: async (id, isSubscribe) => {
+        const response = await api.patch(`music/updatePremiumStatus/${id}`, { isSubscribe });
+        return response.data;
     }
 };

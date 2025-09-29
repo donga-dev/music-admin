@@ -279,13 +279,20 @@ const BackgroundModal = ({ background, mode, onClose, onSave }) => {
 
                             <div className="form-group">
                                 <label htmlFor="image">Background Image *</label>
-                                <input
-                                    type="file"
-                                    id="image"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    required={mode === 'add'}
-                                />
+                                <div className="file-upload-area">
+                                    <input
+                                        type="file"
+                                        id="image"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        required={mode === 'add'}
+                                    />
+                                    <div className="upload-text">
+                                        <FiUpload />
+                                        <span>Click to upload image or drag and drop</span>
+                                        <small>Supported formats: JPG, PNG, GIF, WebP</small>
+                                    </div>
+                                </div>
                                 {preview && (
                                     <div className="image-preview">
                                         <img src={preview} alt="Preview" />

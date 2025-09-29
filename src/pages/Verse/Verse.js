@@ -19,21 +19,12 @@ const Verse = () => {
         try {
             setLoading(true);
             const response = await verseService.getVerse(true);
-            console.log('Verse API Response:', response);
+            console.log('Verse API Response:', response.payload.verse);
 
             // Handle different possible response structures
-            let verseData = [];
-            if (response.payload && response.payload.verse) {
-                verseData = response.payload.verse;
-            } else if (response.verses) {
-                verseData = response.verses;
-            } else if (Array.isArray(response)) {
-                verseData = response;
-            } else if (response.payload && Array.isArray(response.payload)) {
-                verseData = response.payload;
-            }
 
-            setVerses(verseData);
+
+            setVerses(response.payload.verse);
         } catch (error) {
             console.error('Error fetching verses:', error);
             alert('Failed to load verses. Please try again.');
@@ -43,10 +34,7 @@ const Verse = () => {
         }
     };
 
-    const filteredVerses = verses.filter(verse =>
-        verse.verse?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        verse.author?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+
 
     const handleAdd = () => {
         setSelectedVerse(null);
@@ -131,56 +119,56 @@ const Verse = () => {
             </div>
 
             <div className="verses-grid">
-                {filteredVerses.map((verse) => (
-                    <div key={verse._id} className="verse-card">
-                        <div className="verse-content">
-                            <div className="verse-icon">
-                                <FiBook />
-                            </div>
-                            <div className="verse-text">
-                                <p className="verse-quote">
-                                    "{truncateText(verse.verse, 120)}"
-                                </p>
-                                <p className="verse-author">
-                                    — {verse.author || 'Unknown'}
-                                </p>
-                            </div>
+                {/* {filteredVerses.map((verse) => ( */}
+                <div key={verses._id} className="verse-card">
+                    <div className="verse-content">
+                        <div className="verse-icon">
+                            <FiBook />
                         </div>
-
-                        <div className="verse-actions">
-                            <button
-                                className="action-btn view"
-                                onClick={() => handleView(verse)}
-                                title="View Verse"
-                            >
-                                👁
-                            </button>
-                            <button
-                                className="action-btn edit"
-                                onClick={() => handleEdit(verse)}
-                                title="Edit Verse"
-                            >
-                                ✏️
-                            </button>
-                            <button
-                                className="action-btn delete"
-                                onClick={() => handleDelete(verse._id)}
-                                title="Delete Verse"
-                            >
-                                🗑️
-                            </button>
-                        </div>
-
-                        <div className="verse-footer">
-                            <span className="verse-date">
-                                {formatDate(verse.createdAt)}
-                            </span>
+                        <div className="verse-text">
+                            <p className="verse-quote">
+                                "{truncateText(verses.verse, 120)}"
+                            </p>
+                            <p className="verse-author">
+                                — {verses.author || 'Unknown'}
+                            </p>
                         </div>
                     </div>
-                ))}
+
+                    <div className="verse-actions">
+                        <button
+                            className="action-btn view"
+                            onClick={() => handleView(verses)}
+                            title="View Verse"
+                        >
+                            👁
+                        </button>
+                        <button
+                            className="action-btn edit"
+                            onClick={() => handleEdit(verses)}
+                            title="Edit Verse"
+                        >
+                            ✏️
+                        </button>
+                        <button
+                            className="action-btn delete"
+                            onClick={() => handleDelete(verses._id)}
+                            title="Delete Verse"
+                        >
+                            🗑️
+                        </button>
+                    </div>
+
+                    <div className="verse-footer">
+                        <span className="verse-date">
+                            {formatDate(verses.createdAt)}
+                        </span>
+                    </div>
+                </div>
+                {/* ))} */}
             </div>
 
-            {filteredVerses.length === 0 && !loading && (
+            {/* {filteredVerses.length === 0 && !loading && (
                 <div className="empty-state">
                     <FiBook size={60} />
                     <p>No verses found</p>
@@ -189,7 +177,7 @@ const Verse = () => {
                         Add First Verse
                     </button>
                 </div>
-            )}
+            )} */}
 
             {showModal && (
                 <VerseModal
