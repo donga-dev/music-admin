@@ -243,21 +243,21 @@ const Notes = () => {
                                         onClick={() => handleView(note)}
                                         title="View Note"
                                     >
-                                        <FiEye />
+                                        👁
                                     </button>
                                     <button
                                         className="action-btn edit"
                                         onClick={() => handleEdit(note)}
                                         title="Edit Note"
                                     >
-                                        <FiEdit />
+                                        ✏️
                                     </button>
                                     <button
                                         className="action-btn delete"
                                         onClick={() => handleDelete(note._id)}
                                         title="Delete Note"
                                     >
-                                        <FiTrash2 />
+                                        🗑️
                                     </button>
                                 </div>
                             </div>

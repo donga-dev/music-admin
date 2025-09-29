@@ -254,14 +254,14 @@ const Music = () => {
                                             onClick={() => handleEdit(track)}
                                             title="Edit Track"
                                         >
-                                            <FiEdit />
+                                            ✏️
                                         </button>
                                         <button
                                             className="action-btn delete"
                                             onClick={() => handleDelete(track._id)}
                                             title="Delete Track"
                                         >
-                                            <FiTrash2 />
+                                            🗑️
                                         </button>
                                     </div>
                                 </td>

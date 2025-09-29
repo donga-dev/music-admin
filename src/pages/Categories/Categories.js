@@ -150,14 +150,14 @@ const Categories = () => {
                                 onClick={() => handleEdit(category)}
                                 title="Edit Category"
                             >
-                                <FiEdit />
+                                ✏️
                             </button>
                             <button
                                 className="action-btn delete"
                                 onClick={() => handleDelete(category._id)}
                                 title="Delete Category"
                             >
-                                <FiTrash2 />
+                                🗑️
                             </button>
                         </div>
                     </div>

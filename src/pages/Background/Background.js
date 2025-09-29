@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiTrash2, FiPlus, FiSearch, FiEye, FiUpload } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiUpload } from 'react-icons/fi';
 import { backgroundService } from '../../services/backgroundService';
 import './Background.css';
 
@@ -42,6 +42,12 @@ const Background = () => {
     const handleView = (background) => {
         setSelectedBackground(background);
         setModalMode('view');
+        setShowModal(true);
+    };
+
+    const handleEdit = (background) => {
+        setSelectedBackground(background);
+        setModalMode('edit');
         setShowModal(true);
     };
 
@@ -121,14 +127,21 @@ const Background = () => {
                                     onClick={() => handleView(background)}
                                     title="View Background"
                                 >
-                                    <FiEye />
+                                    👁
+                                </button>
+                                <button
+                                    className="action-btn edit"
+                                    onClick={() => handleEdit(background)}
+                                    title="Edit Background"
+                                >
+                                    ✏️
                                 </button>
                                 <button
                                     className="action-btn delete"
                                     onClick={() => handleDelete(background._id)}
                                     title="Delete Background"
                                 >
-                                    <FiTrash2 />
+                                    🗑️
                                 </button>
                             </div>
                         </div>
@@ -208,6 +221,13 @@ const BackgroundModal = ({ background, mode, onClose, onSave }) => {
 
                 await backgroundService.addBackground(submitData);
                 alert('Background added successfully!');
+            } else if (mode === 'edit') {
+                const submitData = new FormData();
+                if (formData.title) submitData.append('title', formData.title);
+                if (formData.image) submitData.append('image', formData.image);
+
+                await backgroundService.updateBackground(background._id, submitData);
+                alert('Background updated successfully!');
             }
             onSave();
         } catch (error) {
@@ -223,7 +243,8 @@ const BackgroundModal = ({ background, mode, onClose, onSave }) => {
             <div className="modal background-modal">
                 <div className="modal-header">
                     <h3>
-                        {mode === 'view' ? 'View Background' : 'Add New Background'}
+                        {mode === 'view' ? 'View Background' :
+                            mode === 'edit' ? 'Edit Background' : 'Add New Background'}
                     </h3>
                     <button className="close-btn" onClick={onClose}>×</button>
                 </div>
@@ -277,7 +298,7 @@ const BackgroundModal = ({ background, mode, onClose, onSave }) => {
                                     Cancel
                                 </button>
                                 <button type="submit" className="save-btn" disabled={saving}>
-                                    {saving ? 'Saving...' : 'Add Background'}
+                                    {saving ? 'Saving...' : mode === 'add' ? 'Add Background' : 'Update Background'}
                                 </button>
                             </div>
                         </form>

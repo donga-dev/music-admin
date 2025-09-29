@@ -137,21 +137,21 @@ const Color = () => {
                                     onClick={() => handleView(color)}
                                     title="View Color"
                                 >
-                                    <FiEye />
+                                    👁
                                 </button>
                                 <button
                                     className="action-btn edit"
                                     onClick={() => handleEdit(color)}
                                     title="Edit Color"
                                 >
-                                    <FiEdit />
+                                    ✏️
                                 </button>
                                 <button
                                     className="action-btn delete"
                                     onClick={() => handleDelete(color._id)}
                                     title="Delete Color"
                                 >
-                                    <FiTrash2 />
+                                    🗑️
                                 </button>
                             </div>
                         </div>

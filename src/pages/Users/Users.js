@@ -26,9 +26,6 @@ const Users = () => {
             setLoading(true);
             const response = await userService.getUsers(page, limit);
             console.log('Users API Response:', response);
-            console.log('Response type:', typeof response);
-            console.log('Response keys:', Object.keys(response || {}));
-
             // Handle different possible response structures
             let userData = [];
             let paginationData = {
@@ -38,38 +35,7 @@ const Users = () => {
                 totalPages: 0
             };
 
-            console.log('Full response structure:', JSON.stringify(response, null, 2));
 
-            if (response.payload && response.payload.users && Array.isArray(response.payload.users)) {
-                console.log('Using response.payload.users');
-                userData = response.payload.users;
-                // Extract pagination info if available
-                if (response.payload.pagination) {
-                    paginationData = {
-                        page: response.payload.pagination.page || page,
-                        limit: response.payload.pagination.limit || limit,
-                        total: response.payload.pagination.total || userData.length,
-                        totalPages: response.payload.pagination.totalPages || Math.ceil(userData.length / limit)
-                    };
-                }
-            } else if (response.users && Array.isArray(response.users)) {
-                console.log('Using response.users');
-                userData = response.users;
-            } else if (Array.isArray(response)) {
-                console.log('Using response as array');
-                userData = response;
-            } else if (response.data && Array.isArray(response.data)) {
-                console.log('Using response.data');
-                userData = response.data;
-            } else {
-                console.log('No matching response structure found');
-                console.log('Available keys:', Object.keys(response || {}));
-                userData = [];
-            }
-
-            console.log('Final userData:', userData);
-            console.log('userData length:', userData.length);
-            console.log('Pagination info:', paginationData);
 
             setUsers(userData);
             setPagination(paginationData);
@@ -203,21 +169,21 @@ const Users = () => {
                                             onClick={() => handleView(user)}
                                             title="View Details"
                                         >
-                                            <FiEye />
+                                            👁
                                         </button>
                                         <button
                                             className="action-btn edit"
                                             onClick={() => handleEdit(user)}
                                             title="Edit User"
                                         >
-                                            <FiEdit />
+                                            ✏️
                                         </button>
                                         <button
                                             className="action-btn delete"
                                             onClick={() => handleDelete(user._id)}
                                             title="Delete User"
                                         >
-                                            <FiTrash2 />
+                                            🗑️
                                         </button>
                                     </div>
                                 </td>

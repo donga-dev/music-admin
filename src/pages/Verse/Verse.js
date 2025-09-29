@@ -153,21 +153,21 @@ const Verse = () => {
                                 onClick={() => handleView(verse)}
                                 title="View Verse"
                             >
-                                <FiEye />
+                                👁
                             </button>
                             <button
                                 className="action-btn edit"
                                 onClick={() => handleEdit(verse)}
                                 title="Edit Verse"
                             >
-                                <FiEdit />
+                                ✏️
                             </button>
                             <button
                                 className="action-btn delete"
                                 onClick={() => handleDelete(verse._id)}
                                 title="Delete Verse"
                             >
-                                <FiTrash2 />
+                                🗑️
                             </button>
                         </div>
 

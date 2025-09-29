@@ -175,6 +175,14 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.action-btn {
+    font-size: 16px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
 .action-btn:hover {
     transform: scale(1.1);
 }

@@ -201,14 +201,14 @@ const BackgroundMusic = () => {
                                 onClick={() => handleEdit(track)}
                                 title="Edit Background Music"
                             >
-                                <FiEdit />
+                                ✏️
                             </button>
                             <button
                                 className="action-btn delete"
                                 onClick={() => handleDelete(track._id)}
                                 title="Delete Background Music"
                             >
-                                <FiTrash2 />
+                                🗑️
                             </button>
                         </div>
                     </div>
