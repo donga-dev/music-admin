@@ -145,6 +145,10 @@
     opacity: 1;
 }
 
+.action-btn-dashboard {
+    width: 100% !important;
+}
+
 .action-btn {
     background: white;
     border: none;
@@ -260,8 +264,13 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Modal Styles */
@@ -520,22 +529,22 @@
     .background-page {
         padding: 10px;
     }
-    
+
     .page-header {
         flex-direction: column;
         gap: 15px;
         text-align: center;
     }
-    
+
     .backgrounds-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .modal {
         margin: 10px;
         max-width: calc(100% - 20px);
     }
-    
+
     .modal-actions {
         flex-direction: column;
     }

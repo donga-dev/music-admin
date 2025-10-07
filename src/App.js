@@ -1,20 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import Layout from './components/Layout/Layout';
-import Login from './pages/Auth/Login';
-import Signup from './pages/Auth/Signup';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Users from './pages/Users/Users';
-import Categories from './pages/Categories/Categories';
-import Music from './pages/Music/Music';
-import BackgroundMusic from './pages/BackgroundMusic/BackgroundMusic';
-import NotesCategories from './pages/NotesCategories/NotesCategories';
-import Notes from './pages/Notes/Notes';
-import Background from './pages/Background/Background';
-import Color from './pages/Color/Color';
-import Verse from './pages/Verse/Verse';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Layout from "./components/Layout/Layout";
+import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Users from "./pages/Users/Users";
+import Categories from "./pages/Categories/Categories";
+import Music from "./pages/Music/Music";
+import BackgroundMusic from "./pages/BackgroundMusic/BackgroundMusic";
+import NotesCategories from "./pages/NotesCategories/NotesCategories";
+import Notes from "./pages/Notes/Notes";
+import Background from "./pages/Background/Background";
+import Color from "./pages/Color/Color";
+import Verse from "./pages/Verse/Verse";
+import "./App.css";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -175,7 +175,10 @@ function App() {
             />
 
             {/* Default redirect */}
-            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route
+              path="/"
+              element={<Navigate to="/dashboard" />}
+            />
 
             {/* 404 Route */}
             <Route
