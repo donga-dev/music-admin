@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { FiEdit, FiTrash2, FiPlus, FiSearch, FiEye, FiFilter } from "react-icons/fi";
 import { notesService } from "../../services/notesService";
 import { notesCategoryService } from "../../services/notesCategoryService";
+import CustomDropdown from "../../components/CustomDropdown";
 import "./Notes.css";
 
 const Notes = () => {
@@ -190,22 +191,6 @@ const Notes = () => {
           <p>Create and manage your personal notes</p>
         </div>
         <div className="header-actions">
-          <div className="view-toggle">
-            <button
-              className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
-              onClick={() => setViewMode("grid")}
-              title="Grid View"
-            >
-              ⊞
-            </button>
-            <button
-              className={`view-btn ${viewMode === "list" ? "active" : ""}`}
-              onClick={() => setViewMode("list")}
-              title="List View"
-            >
-              ☰
-            </button>
-          </div>
           <button
             className="add-btn"
             onClick={handleAdd}
@@ -229,20 +214,18 @@ const Notes = () => {
 
         <div className="filter-box">
           <FiFilter className="filter-icon" />
-          <select
+          <CustomDropdown
+            options={[
+              { value: "", label: "All Categories" },
+              ...categories.map((category) => ({
+                value: category._id,
+                label: category.name,
+              })),
+            ]}
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-              <option
-                key={category._id}
-                value={category._id}
-              >
-                {category.name}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedCategory}
+            placeholder="All Categories"
+          />
         </div>
       </div>
 
@@ -418,23 +401,15 @@ const NotesModal = ({ note, mode, categories, onClose, onSave }) => {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="categoryId">Category</label>
-                  <select
-                    id="categoryId"
-                    name="categoryId"
+                  <CustomDropdown
+                    options={categories.map((category) => ({
+                      value: category._id,
+                      label: category.name,
+                    }))}
                     value={formData.categoryId}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">Select Category</option>
-                    {categories.map((category) => (
-                      <option
-                        key={category._id}
-                        value={category._id}
-                      >
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={(value) => setFormData({ ...formData, categoryId: value })}
+                    placeholder="Select Category"
+                  />
                 </div>
 
                 <div className="form-group">

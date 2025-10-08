@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { FiPlus, FiSearch, FiPlay, FiPause, FiUpload } from "react-icons/fi";
 import { musicService } from "../../services/musicService";
 import { categoryService } from "../../services/categoryService";
+import CustomDropdown from "../../components/CustomDropdown";
 import "./Music.css";
 
 const Music = () => {
@@ -280,20 +281,18 @@ const Music = () => {
         </div>
 
         <div className="filter-box">
-          <select
+          <CustomDropdown
+            options={[
+              { value: "", label: "All Categories" },
+              ...categories.map((category) => ({
+                value: category._id,
+                label: category.name,
+              })),
+            ]}
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-              <option
-                key={category._id}
-                value={category._id}
-              >
-                {category.name}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedCategory}
+            placeholder="All Categories"
+          />
         </div>
       </div>
 
@@ -442,7 +441,21 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
   });
   const [imageFile, setImageFile] = useState(null);
   const [musicFile, setMusicFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [musicFileName, setMusicFileName] = useState("");
   const [saving, setSaving] = useState(false);
+
+  // Set initial preview for existing music
+  useEffect(() => {
+    if (music) {
+      if (music.image) {
+        setImagePreview(`https://api.iamwithyouapp.com/api/v1/files/${music.image}`);
+      }
+      if (music.file) {
+        setMusicFileName(music.file);
+      }
+    }
+  }, [music]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -456,8 +469,18 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
     const file = e.target.files[0];
     if (fileType === "image") {
       setImageFile(file);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImagePreview(null);
+      }
     } else if (fileType === "music") {
       setMusicFile(file);
+      setMusicFileName(file ? file.name : "");
     }
   };
 
@@ -550,23 +573,15 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
 
               <div className="form-group">
                 <label htmlFor="categoryId">Category</label>
-                <select
-                  id="categoryId"
-                  name="categoryId"
+                <CustomDropdown
+                  options={categories.map((category) => ({
+                    value: category._id,
+                    label: category.name,
+                  }))}
                   value={formData.categoryId}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((category) => (
-                    <option
-                      key={category._id}
-                      value={category._id}
-                    >
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(value) => setFormData({ ...formData, categoryId: value })}
+                  placeholder="Select Category"
+                />
               </div>
             </div>
 
@@ -584,6 +599,25 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
                   <span>Click to upload image or drag and drop</span>
                 </div>
               </div>
+              {imagePreview && (
+                <div className="image-preview">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                  />
+                  <button
+                    type="button"
+                    className="remove-image"
+                    onClick={() => {
+                      setImagePreview(null);
+                      setImageFile(null);
+                      document.getElementById("image").value = "";
+                    }}
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="form-group">
@@ -601,6 +635,24 @@ const MusicModal = ({ music, mode, categories, onClose, onSave }) => {
                   <small>Supported formats: MP3, WAV, OGG</small>
                 </div>
               </div>
+              {musicFileName && (
+                <div className="file-name-display">
+                  <span className="file-name">
+                    {musicFile ? `Selected: ${musicFileName}` : `Current: ${musicFileName}`}
+                  </span>
+                  <button
+                    type="button"
+                    className="remove-file"
+                    onClick={() => {
+                      setMusicFileName("");
+                      setMusicFile(null);
+                      document.getElementById("file").value = "";
+                    }}
+                  >
+                    {musicFile ? "Remove File" : "Replace File"}
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="form-group">

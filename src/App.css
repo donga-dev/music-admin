@@ -42,8 +42,13 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-screen p {
@@ -79,7 +84,7 @@ body {
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
@@ -117,6 +122,10 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+}
+
+.add-btn svg {
+  margin-bottom: 0 !important;
 }
 
 .add-btn:hover {
@@ -288,6 +297,7 @@ body {
     opacity: 0;
     transform: scale(0.9) translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -408,6 +418,228 @@ body {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Modern Dropdown Styles */
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 1.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.2em 1.2em;
+  padding-right: 3.5rem;
+  padding-left: 1rem;
+  cursor: pointer;
+  position: relative;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.form-group select:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.form-group select:focus {
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15), 0 6px 16px rgba(0, 0, 0, 0.12);
+  background: white;
+}
+
+.form-group select option {
+  padding: 0.75rem 1.25rem;
+  background: white;
+  color: #2d3748;
+  font-weight: 500;
+  border: none;
+  border-radius: 12px;
+  margin: 4px 8px;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-group select option:hover {
+  background: #f7fafc;
+  color: #667eea;
+  border-left-color: #667eea;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.form-group select option:checked {
+  background: #667eea;
+  color: white;
+  font-weight: 600;
+  border-left-color: #5a67d8;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Custom Dropdown Container for Better Styling */
+.dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #6b7280;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.dropdown-container:hover::after {
+  border-top-color: #667eea;
+}
+
+.dropdown-container select {
+  padding-right: 3.5rem;
+}
+
+/* Enhanced Dropdown Styling */
+select {
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+/* Better spacing for all dropdowns */
+.form-group select,
+.filter-box select {
+  margin-bottom: 0;
+}
+
+/* Improved dropdown list styling */
+select option {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Attractive dropdown enhancements */
+.form-group select,
+.filter-box select {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add subtle inner shadow for depth */
+.form-group select::before,
+.filter-box select::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Enhanced dropdown container styling */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-container::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 18px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.dropdown-container:hover::before {
+  opacity: 0.1;
+}
+
+/* Custom scrollbar for dropdown options */
+select::-webkit-scrollbar {
+  width: 6px;
+}
+
+select::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+select::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* Filter Box Specific Styles */
+.filter-box select {
+  appearance: none;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: none;
+  border-radius: 18px;
+  padding: 1rem 3.5rem 1rem 1.5rem;
+  font-weight: 500;
+  color: #4a5568;
+  font-size: 1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 1.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.2em 1.2em;
+  min-width: 200px;
+}
+
+.filter-box select:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.filter-box select:focus {
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2), 0 8px 20px rgba(0, 0, 0, 0.15);
+  background: white;
+}
+
+.filter-box select option {
+  padding: 0.75rem 1.25rem;
+  background: white;
+  color: #2d3748;
+  font-weight: 500;
+  border-radius: 12px;
+  margin: 4px 8px;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-box select option:hover {
+  background: #f7fafc;
+  color: #667eea;
+  border-left-color: #667eea;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.filter-box select option:checked {
+  background: #667eea;
+  color: white;
+  font-weight: 600;
+  border-left-color: #5a67d8;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: #a0aec0;
@@ -438,20 +670,20 @@ body {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .header-content h1 {
     font-size: 2rem;
   }
-  
+
   .modal {
     width: 95%;
     margin: 1rem;
   }
-  
+
   .modal-body {
     padding: 1.5rem;
   }
-  
+
   .modal-actions {
     flex-direction: column;
   }
@@ -459,12 +691,13 @@ body {
 
 /* Print Styles */
 @media print {
+
   .sidebar,
   .action-buttons,
   .modal-overlay {
     display: none !important;
   }
-  
+
   .main-content {
     margin-left: 0 !important;
   }
@@ -475,11 +708,11 @@ body {
   .action-btn.view {
     border: 2px solid #4a5568;
   }
-  
+
   .action-btn.edit {
     border: 2px solid #319795;
   }
-  
+
   .action-btn.delete {
     border: 2px solid #e53e3e;
   }
@@ -487,6 +720,7 @@ body {
 
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

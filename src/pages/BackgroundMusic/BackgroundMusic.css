@@ -267,24 +267,24 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .music-card {
     margin: 0 auto;
     max-width: 400px;
   }
-  
+
   .music-image {
     height: 250px;
   }
-  
+
   .play-overlay {
     opacity: 1;
   }
-  
+
   .file-upload-area {
     padding: 1.5rem;
   }
-  
+
   .upload-text svg {
     font-size: 1.5rem;
   }
@@ -294,12 +294,45 @@
   .music-content {
     padding: 1rem;
   }
-  
+
   .music-actions {
     padding: 0 1rem 1rem 1rem;
   }
-  
+
   .music-content h3 {
     font-size: 1.1rem;
   }
+}
+
+/* File Upload Styles */
+.file-name-display {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-name {
+  color: #2d3748;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.remove-file {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.remove-file:hover {
+  background: #c53030;
 }

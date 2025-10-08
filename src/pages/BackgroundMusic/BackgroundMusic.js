@@ -274,6 +274,14 @@ const BackgroundMusicModal = ({ music, mode, onClose, onSave }) => {
   const [musicFile, setMusicFile] = useState(null);
   const [saving, setSaving] = useState(false);
   const [imagePreview, setImagePreview] = useState(music?.image || null);
+  const [musicFileName, setMusicFileName] = useState("");
+
+  // Set initial music file name for existing music
+  useEffect(() => {
+    if (music && music.file) {
+      setMusicFileName(music.file);
+    }
+  }, [music]);
 
   const handleChange = (e) => {
     setFormData({
@@ -295,6 +303,7 @@ const BackgroundMusicModal = ({ music, mode, onClose, onSave }) => {
       }
     } else if (fileType === "music") {
       setMusicFile(file);
+      setMusicFileName(file ? file.name : "");
 
       // Auto-detect duration if possible
       if (file) {
@@ -424,6 +433,24 @@ const BackgroundMusicModal = ({ music, mode, onClose, onSave }) => {
                   <small>Supported formats: MP3, WAV, OGG</small>
                 </div>
               </div>
+              {musicFileName && (
+                <div className="file-name-display">
+                  <span className="file-name">
+                    {musicFile ? `Selected: ${musicFileName}` : `Current: ${musicFileName}`}
+                  </span>
+                  <button
+                    type="button"
+                    className="remove-file"
+                    onClick={() => {
+                      setMusicFileName("");
+                      setMusicFile(null);
+                      document.getElementById("file").value = "";
+                    }}
+                  >
+                    {musicFile ? "Remove File" : "Replace File"}
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="modal-actions">

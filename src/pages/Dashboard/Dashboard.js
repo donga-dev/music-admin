@@ -213,28 +213,24 @@ const Dashboard = () => {
                     className="action-btn action-btn-dashboard"
                     onClick={handleAddUser}
                   >
-                    <FiUsers />
                     <span>Add User</span>
                   </button>
                   <button
                     className="action-btn action-btn-dashboard"
                     onClick={handleUploadMusic}
                   >
-                    <FiMusic />
                     <span>Upload Music</span>
                   </button>
                   <button
                     className="action-btn action-btn-dashboard"
                     onClick={handleNewCategory}
                   >
-                    <FiFolder />
                     <span>New Category</span>
                   </button>
                   <button
                     className="action-btn action-btn-dashboard"
                     onClick={handleCreateNote}
                   >
-                    <FiFileText />
                     <span>Create Note</span>
                   </button>
                 </div>

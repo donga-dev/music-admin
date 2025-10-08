@@ -175,7 +175,6 @@ const Background = () => {
 
             <div className="background-info">
               <h3>{background.title || "Untitled"}</h3>
-              <p className="background-date">{formatDate(background.createdAt)}</p>
             </div>
           </div>
         ))}
@@ -297,6 +296,8 @@ const BackgroundModal = ({ background, mode, onClose, onSave }) => {
                       e.target.style.display = "none";
                       e.target.nextSibling.style.display = "flex";
                     }}
+                    width={300}
+                    height={300}
                   />
                 ) : null}
                 <div
@@ -305,17 +306,6 @@ const BackgroundModal = ({ background, mode, onClose, onSave }) => {
                 >
                   <FiUpload size={60} />
                 </div>
-              </div>
-              <div className="view-info">
-                <h2>{background.title || "Untitled"}</h2>
-                <p>
-                  <strong>Created:</strong> {new Date(background.createdAt).toLocaleString()}
-                </p>
-                {background.updatedAt && (
-                  <p>
-                    <strong>Updated:</strong> {new Date(background.updatedAt).toLocaleString()}
-                  </p>
-                )}
               </div>
             </div>
           ) : (

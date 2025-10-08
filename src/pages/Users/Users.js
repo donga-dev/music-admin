@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { userService } from "../../services/userService";
+import CustomDropdown from "../../components/CustomDropdown";
 import "./Users.css";
 
 const Users = () => {
@@ -148,7 +149,7 @@ const Users = () => {
         alert("User deleted successfully!");
       } catch (error) {
         console.error("Error deleting user:", error);
-        alert("Error deleting user. This feature may not be available yet.");
+        alert("Error deleting user. Please try again.");
       }
     }
   };
@@ -240,9 +241,7 @@ const Users = () => {
                       )}
                     </div>
                     <span className="user-name">
-                      {user.name ||
-                        `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
-                        user.email}
+                      {user.name || `${user.fname || ""} ${user.lname || ""}`.trim() || user.email}
                     </span>
                   </div>
                 </td>
@@ -335,18 +334,54 @@ const Users = () => {
 
 const UserModal = ({ user, mode, onClose, onSave }) => {
   const [formData, setFormData] = useState({
-    name: user?.name || `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "",
+    fname: user?.fname || user?.firstName || "",
+    lname: user?.lname || user?.lastName || "",
     email: user?.email || "",
+    password: "",
     phone: user?.phone || user?.phoneNumber || "",
-    status: user?.status || (user?.isActive ? "active" : "inactive"),
+    phoneCode: user?.phoneCode || "+91",
+    font: user?.font || "ubuntu",
+    fontColor: user?.fontColor || "black",
+    fontSize: user?.fontSize || "16",
+    verseColor: user?.verseColor || "black",
+    verseType: user?.verseType || "Solidcolor",
+    verseBackgroundId: user?.verseBackgroundId || "",
+    photo: null,
   });
+  const [photoPreview, setPhotoPreview] = useState(null);
   const [saving, setSaving] = useState(false);
 
+  // Set initial photo preview for existing user
+  useEffect(() => {
+    if (user && (user.photo || user.profileImage)) {
+      setPhotoPreview(
+        `https://api.iamwithyouapp.com/api/v1/files/${user.photo || user.profileImage}`
+      );
+    }
+  }, [user]);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "photo") {
+      const file = e.target.files[0];
+      setFormData({
+        ...formData,
+        [e.target.name]: file,
+      });
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setPhotoPreview(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setPhotoPreview(null);
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -420,12 +455,24 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="fname">First Name</label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="fname"
+                  name="fname"
+                  value={formData.fname}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="lname">Last Name</label>
+                <input
+                  type="text"
+                  id="lname"
+                  name="lname"
+                  value={formData.lname}
                   onChange={handleChange}
                   required
                 />
@@ -456,17 +503,139 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="status">Status</label>
-                <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
+                <label htmlFor="phoneCode">Phone Code</label>
+                <CustomDropdown
+                  options={[
+                    { value: "+91", label: "+91 (India)" },
+                    { value: "+1", label: "+1 (USA)" },
+                    { value: "+44", label: "+44 (UK)" },
+                    { value: "+86", label: "+86 (China)" },
+                  ]}
+                  value={formData.phoneCode}
+                  onChange={(value) => setFormData({ ...formData, phoneCode: value })}
+                  placeholder="Select Phone Code"
+                />
+              </div>
+
+              {mode === "add" && (
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter password for new user"
+                  />
+                </div>
+              )}
+
+              <div className="form-group">
+                <label htmlFor="font">Font</label>
+                <CustomDropdown
+                  options={[
+                    { value: "ubuntu", label: "Ubuntu" },
+                    { value: "arial", label: "Arial" },
+                    { value: "helvetica", label: "Helvetica" },
+                    { value: "times", label: "Times" },
+                  ]}
+                  value={formData.font}
+                  onChange={(value) => setFormData({ ...formData, font: value })}
+                  placeholder="Select Font"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="fontColor">Font Color</label>
+                <input
+                  type="color"
+                  id="fontColor"
+                  name="fontColor"
+                  value={formData.fontColor}
                   onChange={handleChange}
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="blocked">Blocked</option>
-                </select>
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="fontSize">Font Size</label>
+                <input
+                  type="number"
+                  id="fontSize"
+                  name="fontSize"
+                  value={formData.fontSize}
+                  onChange={handleChange}
+                  min="8"
+                  max="72"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="verseColor">Verse Color</label>
+                <input
+                  type="color"
+                  id="verseColor"
+                  name="verseColor"
+                  value={formData.verseColor}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="verseType">Verse Type</label>
+                <CustomDropdown
+                  options={[
+                    { value: "Solidcolor", label: "Solid Color" },
+                    { value: "Gradient", label: "Gradient" },
+                    { value: "Image", label: "Image" },
+                  ]}
+                  value={formData.verseType}
+                  onChange={(value) => setFormData({ ...formData, verseType: value })}
+                  placeholder="Select Verse Type"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="verseBackgroundId">Verse Background ID</label>
+                <input
+                  type="text"
+                  id="verseBackgroundId"
+                  name="verseBackgroundId"
+                  value={formData.verseBackgroundId}
+                  onChange={handleChange}
+                  placeholder="Enter verse background ID"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="photo">Profile Photo</label>
+                <input
+                  type="file"
+                  id="photo"
+                  name="photo"
+                  onChange={handleChange}
+                  accept="image/*"
+                />
+                {photoPreview && (
+                  <div className="image-preview">
+                    <img
+                      src={photoPreview}
+                      alt="Profile Preview"
+                    />
+                    <button
+                      type="button"
+                      className="remove-image"
+                      onClick={() => {
+                        setPhotoPreview(null);
+                        setFormData({ ...formData, photo: null });
+                        document.getElementById("photo").value = "";
+                      }}
+                    >
+                      Remove Photo
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="modal-actions">

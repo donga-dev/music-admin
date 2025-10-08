@@ -25,6 +25,18 @@
 .header-content {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  align-items: start;
+  height: 70px;
+}
+
+.header-content h1 {
+  margin-bottom: 0 !important;
+}
+
+.header-content-main {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   height: 70px;
   max-width: 1200px;
@@ -81,6 +93,8 @@
 
 .content-wrapper {
   padding: 2rem;
+  padding-left: 0;
+  padding-right: 0;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -99,6 +113,10 @@
     height: 60px;
   }
 
+  .header-content-main {
+    height: 60px;
+  }
+
   .user-name {
     display: none;
   }
@@ -114,5 +132,7 @@
 
   .content-wrapper {
     padding: 1rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 }

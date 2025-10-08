@@ -84,12 +84,9 @@ const Categories = () => {
     try {
       if (modalMode === "add") {
         const response = await categoryService.addCategory(formData.name);
-        // Add to local state
         const newCategory = {
-          _id: Date.now().toString(),
-          name: formData.name,
-          createdAt: new Date().toISOString(),
           musicCount: 0,
+          ...response?.payload?.category,
         };
         setCategories([...categories, newCategory]);
       } else {

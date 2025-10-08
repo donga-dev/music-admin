@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
       <Sidebar />
       <div className="main-content">
         <header className="main-header">
-          <div className="header-content">
+          <div className="header-content-main">
             <div className="user-profile">
               <FiUser className="user-icon" />
               <span className="user-name">{user?.name || user?.email}</span>

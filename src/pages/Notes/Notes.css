@@ -54,23 +54,7 @@
   z-index: 1;
 }
 
-.filter-box select {
-  width: 100%;
-  padding: 1rem 1rem 1rem 2.5rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 1rem;
-  background: white;
-  transition: all 0.3s ease;
-  appearance: none;
-  cursor: pointer;
-}
-
-.filter-box select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
+/* Notes page inherits filter-box dropdown styles from App.css */
 
 /* Grid and List Views */
 .notes-container.grid {
@@ -378,36 +362,36 @@
 @media (max-width: 768px) {
   .page-header {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 1rem;
   }
-  
+
   .header-actions {
     justify-content: space-between;
   }
-  
+
   .notes-controls {
     flex-direction: column;
   }
-  
+
   .notes-container.grid {
     grid-template-columns: 1fr;
   }
-  
+
   .notes-container.list .note-card {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
-  
+
   .note-header {
     margin-bottom: 0.75rem;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
   }
-  
+
   .mood-selector {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -417,19 +401,19 @@
   .note-card {
     padding: 1rem;
   }
-  
+
   .note-content h3 {
     font-size: 1.1rem;
   }
-  
+
   .note-preview {
     font-size: 0.9rem;
   }
-  
+
   .mood-selector {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   .mood-btn {
     width: 35px;
     height: 35px;
