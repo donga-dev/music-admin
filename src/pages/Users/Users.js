@@ -13,7 +13,7 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [modalMode, setModalMode] = useState("view"); // 'view', 'edit', 'add'
+  const [modalMode, setModalMode] = useState("view"); // 'view', 'edit'
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -30,19 +30,6 @@ const Users = () => {
     }
     fetchUsers();
   }, []);
-
-  useEffect(() => {
-    // Check if we should open the modal from URL parameter
-    const action = searchParams.get("action");
-    if (action === "add" && !actionProcessedRef.current) {
-      actionProcessedRef.current = true;
-      setShowModal(true);
-      setModalMode("add");
-      setSelectedUser(null);
-      // Remove the action parameter from URL
-      setSearchParams({});
-    }
-  }, [searchParams, setSearchParams]);
 
   const fetchUsers = async (page = 1, limit = 10) => {
     try {
@@ -154,12 +141,6 @@ const Users = () => {
     }
   };
 
-  const handleAdd = () => {
-    setSelectedUser(null);
-    setModalMode("add");
-    setShowModal(true);
-  };
-
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -188,13 +169,6 @@ const Users = () => {
           <h1>User Management</h1>
           <p>Manage all users in the system</p>
         </div>
-        <button
-          className="add-btn"
-          onClick={handleAdd}
-        >
-          <FiPlus />
-          Add User
-        </button>
       </div>
 
       <div className="users-controls">
@@ -337,16 +311,7 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
     fname: user?.fname || user?.firstName || "",
     lname: user?.lname || user?.lastName || "",
     email: user?.email || "",
-    password: "",
     phone: user?.phone || user?.phoneNumber || "",
-    phoneCode: user?.phoneCode || "+91",
-    font: user?.font || "ubuntu",
-    fontColor: user?.fontColor || "black",
-    fontSize: user?.fontSize || "16",
-    verseColor: user?.verseColor || "black",
-    verseType: user?.verseType || "Solidcolor",
-    verseBackgroundId: user?.verseBackgroundId || "",
-    photo: null,
   });
   const [photoPreview, setPhotoPreview] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -389,17 +354,12 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
     setSaving(true);
 
     try {
-      if (mode === "add") {
-        await userService.createUser(formData);
-        alert("User created successfully!");
-      } else if (mode === "edit") {
-        await userService.updateUser(user._id, formData);
-        alert("User updated successfully!");
-      }
+      await userService.updateUser(user._id, formData);
+      alert("User updated successfully!");
       onSave();
     } catch (error) {
       console.error("Error saving user:", error);
-      alert("Error saving user. This feature may not be fully implemented yet.");
+      alert("Error saving user. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -409,9 +369,7 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal-header">
-          <h3>
-            {mode === "view" ? "User Details" : mode === "edit" ? "Edit User" : "Add New User"}
-          </h3>
+          <h3>{mode === "view" ? "User Details" : "Edit User"}</h3>
           <button
             className="close-btn"
             onClick={onClose}
@@ -436,6 +394,10 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
               <div className="detail-item">
                 <label>Phone:</label>
                 <span>{user.phone || user.phoneNumber || "N/A"}</span>
+              </div>
+              <div className="detail-item">
+                <label>Role:</label>
+                <span className="role-badge">{user.role || "user"}</span>
               </div>
               <div className="detail-item">
                 <label>Status:</label>
@@ -485,9 +447,10 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
                   id="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleChange}
-                  required
+                  readOnly
+                  className="readonly-field"
                 />
+                <small className="readonly-note">Email cannot be changed</small>
               </div>
 
               <div className="form-group">
@@ -500,142 +463,6 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
                   onChange={handleChange}
                   required
                 />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phoneCode">Phone Code</label>
-                <CustomDropdown
-                  options={[
-                    { value: "+91", label: "+91 (India)" },
-                    { value: "+1", label: "+1 (USA)" },
-                    { value: "+44", label: "+44 (UK)" },
-                    { value: "+86", label: "+86 (China)" },
-                  ]}
-                  value={formData.phoneCode}
-                  onChange={(value) => setFormData({ ...formData, phoneCode: value })}
-                  placeholder="Select Phone Code"
-                />
-              </div>
-
-              {mode === "add" && (
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    placeholder="Enter password for new user"
-                  />
-                </div>
-              )}
-
-              <div className="form-group">
-                <label htmlFor="font">Font</label>
-                <CustomDropdown
-                  options={[
-                    { value: "ubuntu", label: "Ubuntu" },
-                    { value: "arial", label: "Arial" },
-                    { value: "helvetica", label: "Helvetica" },
-                    { value: "times", label: "Times" },
-                  ]}
-                  value={formData.font}
-                  onChange={(value) => setFormData({ ...formData, font: value })}
-                  placeholder="Select Font"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="fontColor">Font Color</label>
-                <input
-                  type="color"
-                  id="fontColor"
-                  name="fontColor"
-                  value={formData.fontColor}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="fontSize">Font Size</label>
-                <input
-                  type="number"
-                  id="fontSize"
-                  name="fontSize"
-                  value={formData.fontSize}
-                  onChange={handleChange}
-                  min="8"
-                  max="72"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="verseColor">Verse Color</label>
-                <input
-                  type="color"
-                  id="verseColor"
-                  name="verseColor"
-                  value={formData.verseColor}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="verseType">Verse Type</label>
-                <CustomDropdown
-                  options={[
-                    { value: "Solidcolor", label: "Solid Color" },
-                    { value: "Gradient", label: "Gradient" },
-                    { value: "Image", label: "Image" },
-                  ]}
-                  value={formData.verseType}
-                  onChange={(value) => setFormData({ ...formData, verseType: value })}
-                  placeholder="Select Verse Type"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="verseBackgroundId">Verse Background ID</label>
-                <input
-                  type="text"
-                  id="verseBackgroundId"
-                  name="verseBackgroundId"
-                  value={formData.verseBackgroundId}
-                  onChange={handleChange}
-                  placeholder="Enter verse background ID"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="photo">Profile Photo</label>
-                <input
-                  type="file"
-                  id="photo"
-                  name="photo"
-                  onChange={handleChange}
-                  accept="image/*"
-                />
-                {photoPreview && (
-                  <div className="image-preview">
-                    <img
-                      src={photoPreview}
-                      alt="Profile Preview"
-                    />
-                    <button
-                      type="button"
-                      className="remove-image"
-                      onClick={() => {
-                        setPhotoPreview(null);
-                        setFormData({ ...formData, photo: null });
-                        document.getElementById("photo").value = "";
-                      }}
-                    >
-                      Remove Photo
-                    </button>
-                  </div>
-                )}
               </div>
 
               <div className="modal-actions">
@@ -651,7 +478,7 @@ const UserModal = ({ user, mode, onClose, onSave }) => {
                   className="save-btn"
                   disabled={saving}
                 >
-                  {saving ? "Saving..." : mode === "edit" ? "Update" : "Create"}
+                  {saving ? "Saving..." : "Update"}
                 </button>
               </div>
             </form>

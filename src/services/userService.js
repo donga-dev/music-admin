@@ -21,6 +21,7 @@ export const userService = {
     formData.append("lname", userData.lname);
     formData.append("phone", userData.phone);
     formData.append("phoneCode", userData.phoneCode || "+91");
+    formData.append("role", userData.role || "user");
 
     // Add optional fields with defaults
     formData.append("font", userData.font || "ubuntu");
@@ -51,24 +52,13 @@ export const userService = {
   updateUser: async (userId, userData) => {
     const formData = new FormData();
 
-    // Add fields that are provided
-    if (userData.email) formData.append("email", userData.email);
+    // Add userId as required parameter
+    formData.append("userId", userId);
+
+    // Add only editable fields
     if (userData.fname) formData.append("fname", userData.fname);
     if (userData.lname) formData.append("lname", userData.lname);
     if (userData.phone) formData.append("phone", userData.phone);
-    if (userData.phoneCode) formData.append("phoneCode", userData.phoneCode);
-    if (userData.font) formData.append("font", userData.font);
-    if (userData.fontColor) formData.append("fontColor", userData.fontColor);
-    if (userData.fontSize) formData.append("fontSize", userData.fontSize);
-    if (userData.verseColor) formData.append("verseColor", userData.verseColor);
-    if (userData.verseType) formData.append("verseType", userData.verseType);
-    if (userData.verseBackgroundId)
-      formData.append("verseBackgroundId", userData.verseBackgroundId);
-
-    // Add photo if provided
-    if (userData.photo) {
-      formData.append("photo", userData.photo);
-    }
 
     const response = await api.put("admin/updateUser", formData, {
       headers: {
