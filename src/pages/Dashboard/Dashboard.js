@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiUsers, FiMusic, FiFileText, FiFolder } from "react-icons/fi";
+import {
+  FiUsers,
+  FiMusic,
+  FiFileText,
+  FiFolder,
+  FiUserPlus,
+  FiUpload,
+  FiPlusCircle,
+  FiEdit3,
+} from "react-icons/fi";
 import { dashboardService } from "../../services/dashboardService";
 import "./Dashboard.css";
 
@@ -135,7 +144,7 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="dashboard-header">
         <h1>Dashboard</h1>
-        <p>Welcome to Music Admin Panel</p>
+        <p>Welcome to IAM Music Admin Panel</p>
       </div>
 
       {loading ? (
@@ -173,7 +182,7 @@ const Dashboard = () => {
 
           <div className="dashboard-content">
             <div className="content-grid">
-              <div className="card">
+              {/* <div className="card">
                 <h3>Recent Activity</h3>
                 <div className="activity-list">
                   <div className="activity-item">
@@ -204,35 +213,47 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="card">
-                <h3>Quick Actions</h3>
-                <div className="quick-actions">
-                  <button
-                    className="action-btn action-btn-dashboard"
+              <div className="quick-actions-section">
+                <h3 className="quick-actions-title">Quick Actions</h3>
+                <div className="quick-actions-grid">
+                  <div
+                    className="quick-action-card"
                     onClick={handleAddUser}
                   >
-                    <span>Add User</span>
-                  </button>
-                  <button
-                    className="action-btn action-btn-dashboard"
+                    <div className="quick-action-icon user-icon">
+                      <FiUserPlus />
+                    </div>
+                    <span className="quick-action-label">Add User</span>
+                  </div>
+                  <div
+                    className="quick-action-card"
                     onClick={handleUploadMusic}
                   >
-                    <span>Upload Music</span>
-                  </button>
-                  <button
-                    className="action-btn action-btn-dashboard"
+                    <div className="quick-action-icon music-icon">
+                      <FiUpload />
+                    </div>
+                    <span className="quick-action-label">Upload Music</span>
+                  </div>
+                  <div
+                    className="quick-action-card"
                     onClick={handleNewCategory}
                   >
-                    <span>New Category</span>
-                  </button>
-                  <button
-                    className="action-btn action-btn-dashboard"
+                    <div className="quick-action-icon category-icon">
+                      <FiPlusCircle />
+                    </div>
+                    <span className="quick-action-label">New Category</span>
+                  </div>
+                  <div
+                    className="quick-action-card"
                     onClick={handleCreateNote}
                   >
-                    <span>Create Note</span>
-                  </button>
+                    <div className="quick-action-icon note-icon">
+                      <FiEdit3 />
+                    </div>
+                    <span className="quick-action-label">Create Note</span>
+                  </div>
                 </div>
               </div>
             </div>

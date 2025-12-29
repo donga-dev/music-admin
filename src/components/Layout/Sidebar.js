@@ -25,7 +25,7 @@ const Sidebar = () => {
     { path: "/music", icon: FiMusic, label: "Music" },
     { path: "/background-music", icon: FiMusic, label: "Background Music" },
     { path: "/notes-categories", icon: FiTag, label: "Notes Categories" },
-    { path: "/notes", icon: FiFileText, label: "Notes" },
+    // { path: "/notes", icon: FiFileText, label: "Notes" },
     { path: "/background", icon: FiImage, label: "Backgrounds" },
     { path: "/color", icon: FiTag, label: "Colors" },
     { path: "/verse", icon: FiBook, label: "Verses Background" },
@@ -38,7 +38,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>Music Admin</h2>
+        <h2>IAM Music Admin</h2>
         <div className="user-info">
           <p>Welcome, {user?.name || user?.email}</p>
         </div>
