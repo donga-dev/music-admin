@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Layout from "./components/Layout/Layout";
 import Login from "./pages/Auth/Login";
-import Signup from "./pages/Auth/Signup";
+// import Signup from "./pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Users from "./pages/Users/Users";
 import Categories from "./pages/Categories/Categories";
@@ -63,14 +63,14 @@ function App() {
                 </PublicRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/signup"
               element={
                 <PublicRoute>
                   <Signup />
                 </PublicRoute>
               }
-            />
+            /> */}
 
             {/* Protected Routes */}
             <Route
